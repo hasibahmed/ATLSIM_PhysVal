@@ -42,7 +42,10 @@ std::vector<std::string> loadSamples(std::string object)
 {
     std::vector<std::string> v_samples;
 
-    if (object == "Jets" or object == "TopoClusters")
+    if (object == "largeRJets") {
+        v_samples = {"AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets"};
+
+    } else if (object == "Jets" or object == "TopoClusters")
     {
         v_samples = {"ttbar",
                      "JZ3W",
@@ -77,6 +80,14 @@ std::map<std::string, std::string> loadInputs(std::string inputDir, std::string 
 {
     std::map<std::string, std::string> inputFiles;
 
+    if (sample == "AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets") {
+
+        inputFiles["G4"] = inputDir + "/G4/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.NTUP_PHYSVAL.e4993_s3432_r11403_p3851_p3861_p3747/NTUP_PHYSVAL.18034540._000001.pool.root.1";
+
+        inputFiles["G4FastCalo"] = inputDir + "FCSV2/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.NTUP_PHYSVAL.e4993_s3434_r11403_p3851_p3861_p3747/NTUP_PHYSVAL.18049722._000001.pool.root.1"; 
+
+        inputFiles["AF2"] = inputDir + "AF2/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.NTUP_PHYSVAL.e4993_s3433_r11403_p3851_p3861_p3747/NTUP_PHYSVAL.18049691._000001.pool.root.1";     
+    }
     if (sample == "ttbar")
     {
         inputFiles["G4"] = inputDir + "/G4/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.NTUP_PHYSVAL.e4993_s3432_r11322_p3746_p3747/NTUP_PHYSVAL.17554556._000001.pool.root.1";
@@ -164,7 +175,11 @@ std::vector<std::string> loadDirectorties(std::string object) {
 
     std::vector<std::string> v_dir; 
 
-    if (object == "Jets") {
+    if(object == "largeRJets") {
+
+        v_dir = {"Jets/AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets"}; 
+
+    } else if (object == "Jets") {
 
         v_dir = {"Jets/AntiKt4EMTopoJets"};
 
