@@ -42,15 +42,17 @@ std::vector<std::string> loadSamples(std::string object)
 {
     std::vector<std::string> v_samples;
 
-    if (object == "largeRJets") {
-        v_samples = {"AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets"};
+    if (object == "AntiKt10LCTopoJets") {
+       
 
-    } else if (object == "Jets" or object == "TopoClusters")
+    } else if (object == "AntiKt4TopoJets" or object == "TopoClusters")
     {
         v_samples = {"ttbar",
                      "JZ3W",
                      "JZ7W",
                      "minbias"};
+
+       
     }
     else if (object == "MET")
     {
@@ -61,6 +63,7 @@ std::vector<std::string> loadSamples(std::string object)
         v_samples = {"ttbar",
                      "Zee",
                      "electron"};
+       
     }
     else if (object == "Photon")
     {
@@ -71,6 +74,7 @@ std::vector<std::string> loadSamples(std::string object)
         v_samples = {"ttbar",
                      "Ztautau",
                      "DYtautau"};
+       
     }
 
     return v_samples;
@@ -90,11 +94,18 @@ std::map<std::string, std::string> loadInputs(std::string inputDir, std::string 
     }
     if (sample == "ttbar")
     {
-        inputFiles["G4"] = inputDir + "/G4/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.NTUP_PHYSVAL.e4993_s3432_r11322_p3746_p3747/NTUP_PHYSVAL.17554556._000001.pool.root.1";
+        // inputFiles["G4"] = inputDir + "/G4/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.NTUP_PHYSVAL.e4993_s3432_r11322_p3746_p3747/NTUP_PHYSVAL.17554556._000001.pool.root.1";
 
-        inputFiles["G4FastCalo"] = inputDir + "/FCSV2/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.NTUP_PHYSVAL.e4993_s3434_r11322_p3746_p3747/NTUP_PHYSVAL.17554749._000001.pool.root.1";
+        // inputFiles["G4FastCalo"] = inputDir + "/FCSV2/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.NTUP_PHYSVAL.e4993_s3434_r11322_p3746_p3747/NTUP_PHYSVAL.17554749._000001.pool.root.1";
 
-        inputFiles["AF2"] = inputDir + "/AF2/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.NTUP_PHYSVAL.e4993_s3433_r11322_p3746_p3747/NTUP_PHYSVAL.17554651._000001.pool.root.1";
+        // inputFiles["AF2"] = inputDir + "/AF2/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.NTUP_PHYSVAL.e4993_s3433_r11322_p3746_p3747/NTUP_PHYSVAL.17554651._000001.pool.root.1";
+
+        inputFiles["G4"] = inputDir + "/G4/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.NTUP_PHYSVAL.e4993_s3432_r11403_p3851_p3861_p3747/NTUP_PHYSVAL.18034540._000001.pool.root.1";
+
+        inputFiles["G4FastCalo"] = inputDir + "FCSV2/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.NTUP_PHYSVAL.e4993_s3434_r11403_p3851_p3861_p3747/NTUP_PHYSVAL.18049722._000001.pool.root.1"; 
+
+        inputFiles["AF2"] = inputDir + "AF2/valid1.410000.PowhegPythiaEvtGen_P2012_ttbar_hdamp172p5_nonallhad.merge.NTUP_PHYSVAL.e4993_s3433_r11403_p3851_p3861_p3747/NTUP_PHYSVAL.18049691._000001.pool.root.1"; 
+
     } else if (sample == "JZ3W")
     {
         inputFiles["G4"] = inputDir + "/G4/valid1.361023.Pythia8EvtGen_A14NNPDF23LO_jetjet_JZ3W.merge.NTUP_PHYSVAL.e5112_s3432_r11322_p3746_p3747/NTUP_PHYSVAL.17554477._000002.pool.root.1";
@@ -175,11 +186,11 @@ std::vector<std::string> loadDirectorties(std::string object) {
 
     std::vector<std::string> v_dir; 
 
-    if(object == "largeRJets") {
+    if(object == "AntiKt10LCTopoJets") {
 
         v_dir = {"Jets/AntiKt10LCTopoTrimmedPtFrac5SmallR20Jets"}; 
 
-    } else if (object == "Jets") {
+    } else if (object == "AntiKt4TopoJets") {
 
         v_dir = {"Jets/AntiKt4EMTopoJets"};
 
@@ -465,8 +476,8 @@ TCanvas* compare_TH1F(TKey *key)
     leg->Draw();
 
     ATLASLabel(0.2, 0.9, "Simulation Internal");
-    myText(0.2, 0.85, 1, sample.c_str());
-    myText(0.2, 0.8, 1, object.c_str());
+    myText(0.2, 0.85, 1, (object + "(" + sample + ")").c_str());
+    // myText(0.2, 0.8, 1, object.c_str());
 
     pad2->cd();
 
@@ -488,7 +499,7 @@ TCanvas* compare_TH1F(TKey *key)
     // c1->Close();
     return c1; 
 }
-void runPhysValComparison(std::string object="Photon", bool isNorm = true, std::string outDir="./PhysVal2/Shape_Comparison/", std::string inDir="./NTUP_PHYSVAL_April2019/")
+void runPhysValComparison(std::string object_="Tau", bool isNorm = true, std::string outDir="./Physval2_JetETmiss/Shape_Comparison/", std::string inDir="./NTUP_JetEtmiss_May2019/")
 {
 
 #ifdef __CINT__
@@ -501,6 +512,7 @@ void runPhysValComparison(std::string object="Photon", bool isNorm = true, std::
     SetAtlasStyle();
 
     is_norm = isNorm; 
+    object = object_; 
     std::vector<std::string> v_samples = loadSamples(object); 
     std::vector<std::string> v_dir = loadDirectorties(object);
 
